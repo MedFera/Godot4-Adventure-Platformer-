@@ -1,0 +1,153 @@
+[gd_scene load_steps=19 format=3 uid="uid://48irefo8ocxx"]
+
+[ext_resource type="Script" path="res://Mobs/Spiny_Mushroom/SpinyMushroom.gd" id="1_0ig3x"]
+[ext_resource type="Texture2D" uid="uid://du74menb0lij5" path="res://Assets/Spiney_Mushroom_Enemy.png" id="1_nlcws"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nhtny"]
+atlas = ExtResource("1_nlcws")
+region = Rect2(0, 384, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hhglt"]
+atlas = ExtResource("1_nlcws")
+region = Rect2(128, 384, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l56i6"]
+atlas = ExtResource("1_nlcws")
+region = Rect2(256, 384, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ls8h3"]
+atlas = ExtResource("1_nlcws")
+region = Rect2(384, 384, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1ixoh"]
+atlas = ExtResource("1_nlcws")
+region = Rect2(0, 256, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5gljv"]
+atlas = ExtResource("1_nlcws")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xosr6"]
+atlas = ExtResource("1_nlcws")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yymmx"]
+atlas = ExtResource("1_nlcws")
+region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3gm7s"]
+atlas = ExtResource("1_nlcws")
+region = Rect2(0, 128, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uludf"]
+atlas = ExtResource("1_nlcws")
+region = Rect2(128, 128, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7misw"]
+atlas = ExtResource("1_nlcws")
+region = Rect2(256, 128, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4361y"]
+atlas = ExtResource("1_nlcws")
+region = Rect2(384, 128, 128, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_i3cf4"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nhtny")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hhglt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l56i6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ls8h3")
+}],
+"loop": false,
+"name": &"Dead",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1ixoh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1ixoh")
+}],
+"loop": true,
+"name": &"Hit",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5gljv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xosr6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yymmx")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3gm7s")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uludf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7misw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4361y")
+}],
+"loop": true,
+"name": &"Moving",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_27og3"]
+size = Vector2(32, 25)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3f8yg"]
+size = Vector2(54, 13)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vwmcy"]
+size = Vector2(40, 29.5)
+
+[node name="SpinyMushroom" type="CharacterBody2D"]
+script = ExtResource("1_0ig3x")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -25)
+sprite_frames = SubResource("SpriteFrames_i3cf4")
+animation = &"Hit"
+autoplay = "Idle"
+
+[node name="BodyCollision" type="CollisionShape2D" parent="."]
+position = Vector2(0, -8)
+shape = SubResource("RectangleShape2D_27og3")
+
+[node name="AttackBox" type="Area2D" parent="."]
+
+[node name="AttackBoxCollision" type="CollisionShape2D" parent="AttackBox"]
+position = Vector2(0, -32)
+shape = SubResource("RectangleShape2D_3f8yg")
+
+[node name="HitBox" type="Area2D" parent="."]
+
+[node name="HitBoxCollision" type="CollisionShape2D" parent="HitBox"]
+position = Vector2(0, -10.25)
+shape = SubResource("RectangleShape2D_vwmcy")
+
+[node name="IdleTimer" type="Timer" parent="."]
+
+[connection signal="body_entered" from="AttackBox" to="." method="_on_attack_box_body_entered"]
+[connection signal="body_entered" from="HitBox" to="." method="_on_hit_box_body_entered"]
